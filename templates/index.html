@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AutoStream AI</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            display: flex;
+            height: 100vh;
+            background: #343541;
+            color: white;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: #202123;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+        }
+
+        .plan {
+            background: #444654;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .plan button {
+            margin-top: 10px;
+            width: 100%;
+            padding: 8px;
+            border: none;
+            background: #10a37f;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login {
+            margin-top: 20px;
+        }
+
+        /* Chat area */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-box {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .message {
+            margin-bottom: 15px;
+        }
+
+        .user {
+            text-align: right;
+            color: #10a37f;
+        }
+
+        .bot {
+            text-align: left;
+        }
+
+        /* Input */
+        .input-box {
+            display: flex;
+            padding: 10px;
+            background: #40414f;
+        }
+
+        .input-box input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .input-box button {
+            margin-left: 10px;
+            padding: 10px;
+            background: #10a37f;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>AutoStream</h2>
+
+        <div class="plan">
+            <b>Basic Plan</b>
+            <p>$29/month</p>
+            <button onclick="selectPlan('Basic')">Select</button>
+        </div>
+
+        <div class="plan">
+            <b>Pro Plan</b>
+            <p>$79/month</p>
+            <button onclick="selectPlan('Pro')">Select</button>
+        </div>
+
+        <div class="login">
+            <h3>Login</h3>
+            <input id="name" placeholder="Name" style="width:100%; margin-bottom:5px;">
+            <input id="email" placeholder="Email" style="width:100%; margin-bottom:5px;">
+            <button onclick="login()">Login</button>
+        </div>
+    </div>
+
+    <!-- Chat Area -->
+    <div class="chat-container">
+        <div class="chat-box" id="chat"></div>
+
+        <div class="input-box">
+            <input id="input" placeholder="Ask something..." />
+            <button onclick="send()">Send</button>
+        </div>
+    </div>
+
+<script>
+let selectedPlan = "";
+
+function selectPlan(plan) {
+    selectedPlan = plan;
+    alert("Selected: " + plan);
+}
+
+function login() {
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+
+    alert("Logged in as " + name);
+}
+
+async function send() {
+    let input = document.getElementById("input");
+    let chat = document.getElementById("chat");
+
+    let userMsg = input.value;
+
+    // Show user message
+    chat.innerHTML += `<div class="message user">${userMsg}</div>`;
+
+    let res = await fetch("http://127.0.0.1:8000/chat", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({message: userMsg})
+    });
+
+    let data = await res.json();
+
+    // Show bot response
+    chat.innerHTML += `<div class="message bot">${data.response}</div>`;
+
+    input.value = "";
+    chat.scrollTop = chat.scrollHeight;
+}
+</script>
+
+</body>
+</html>
