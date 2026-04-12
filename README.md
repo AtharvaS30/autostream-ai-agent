@@ -69,6 +69,9 @@ python -m uvicorn api:app --reload
 5.Open in browser
 Visit: http://127.0.0.1:8000/
 
+## 🖼️ Demo UI
+[AutoStream Demo](assets/screenshot.png)
+
 👤 Author
 Atharva Manoj Shivade
 
