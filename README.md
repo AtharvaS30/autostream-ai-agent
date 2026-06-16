@@ -66,7 +66,7 @@ pip install -r requirements.txt
 4. Run the Application
 python -m uvicorn api:app --reload
 
-5.Open in browser
+5. Open in browser
 Visit: http://127.0.0.1:8000/
 
 ## 🖼️ Demo UI
